@@ -1,10 +1,21 @@
 - hosts: webservers
 
   tasks:
+    - name: update apt cache
+      apt: update_cache=yes
+      tags: update-cache
+
     - name: install git
       apt: name=git state=present update_cache=yes
       become: yes
+      tags: git
+
+    - name: install make
+      apt: name=make state=present update_cache=yes
+      become: yes
+      tags: make
 
     - name: delete git
       apt: name=git state=absent
       become: yes
+      tags: [delete, git]
