@@ -1,4 +1,7 @@
 - hosts: webservers
+  vars:
+    nginx_port: 8080
+    root_dir: /usr/share/nginx
 
   tasks:
     - name: install nginx
@@ -8,12 +11,12 @@
     - name: copy html file to nginx root
       copy:
         src: files/index.html
-        dest: /usr/share/nginx/html/index.html
+        dest: '{{ root_dir }}/html/index.html'
         mode: '0644'
 
     - name: copy nginx config
-      copy:
-        src: files/nginx.conf
+      ansible.builtin.template:
+        src: files/nginx.conf.j2
         dest: /etc/nginx/nginx.conf
         owner: root
         group: root
